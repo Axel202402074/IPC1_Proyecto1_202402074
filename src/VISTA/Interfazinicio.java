@@ -131,7 +131,6 @@ public class Interfazinicio extends javax.swing.JFrame {
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
         //codigo del boton login
-        JOptionPane.showMessageDialog(this, "Usuario y/o contraeña incorrectos", "Adevertencia", JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_BtnLoginActionPerformed
 
     private void PasswordLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordLoginActionPerformed
