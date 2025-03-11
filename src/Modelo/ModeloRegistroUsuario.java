@@ -41,27 +41,36 @@ public class ModeloRegistroUsuario {
     
     
     private List<Usuario> usuarios; // Lista de usuarios registrados
-    private int maxClientes; // Cantidad máxima de clientes permitidos
-
+    private int maxClientes =7; // Cantidad máxima de clientes permitidos
+    private String ultimoMensaje;//ultimo mensaje generado
+    private boolean mensajeGenerado; // Variable para controlar si se ha generado un mensaje
+     
     public ModeloRegistroUsuario(int maxClientes) {
         this.usuarios = new ArrayList<>();
         this.maxClientes = maxClientes;
+        this.mensajeGenerado = false; // Inicializar la variable en false
     }
 
     public boolean crearUsuario(String cui, String nombre, String apellido) {
         // Validar que no exista un usuario con el mismo CUI
         if (existeUsuario(cui)) {
+            this.ultimoMensaje = "No se pueden crear clientes con CUI duplicados. El CUI ingresado ya existe en el sistema";
+            this.mensajeGenerado = true; // Marcar que se ha generado un mensaje
             return false;
         }
 
         // Validar que no se haya alcanzado el máximo de clientes permitidos
         if (usuarios.size() >= maxClientes) {
+            this.ultimoMensaje = "No es posible crear más clientes";
+            this.mensajeGenerado = true; // Marcar que se ha generado un mensaje
             return false;
         }
 
         // Crear y agregar el nuevo usuario a la lista
         Usuario nuevoUsuario = new Usuario(cui, nombre, apellido);
         usuarios.add(nuevoUsuario);
+        this.ultimoMensaje = "Cliente creado exitosamente";
+        this.mensajeGenerado = true; // Marcar que se ha generado un mensaje
         return true;
     }
 
@@ -73,5 +82,14 @@ public class ModeloRegistroUsuario {
             }
         }
         return false;
+    }
+
+    public String getUltimoMensaje() {
+        this.mensajeGenerado = false; // Resetear la variable después de obtener el mensaje
+        return this.ultimoMensaje;
+    }
+
+    public boolean getMensajeGenerado() {
+        return this.mensajeGenerado;
     }
 }

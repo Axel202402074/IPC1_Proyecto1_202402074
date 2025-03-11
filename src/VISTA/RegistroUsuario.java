@@ -1,6 +1,10 @@
 
 package VISTA;
 
+import Controlador.ControladorRegistroUsuario;
+import Modelo.ModeloRegistroUsuario;
+import javax.swing.JOptionPane;
+
 public class RegistroUsuario extends javax.swing.JFrame {
 
     public RegistroUsuario() {
@@ -30,7 +34,7 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
         jMenu1.setText("jMenu1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
@@ -41,6 +45,12 @@ public class RegistroUsuario extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("CUI");
+
+        TxtCuiUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TxtCuiUsuarioActionPerformed(evt);
+            }
+        });
 
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -137,8 +147,13 @@ public class RegistroUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCrearUsuarioActionPerformed
-        // TODO add your handling code here:
+       ControladorRegistroUsuario controlador = new ControladorRegistroUsuario(this, new ModeloRegistroUsuario(6));
+        controlador.crearUsuario();
     }//GEN-LAST:event_BtnCrearUsuarioActionPerformed
+
+    private void TxtCuiUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtCuiUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TxtCuiUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,9 +193,9 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton BtnCrearUsuario;
-    private javax.swing.JTextField TxtApellidoUsuario;
-    private javax.swing.JTextField TxtCuiUsuario;
-    private javax.swing.JTextField TxtNombreUsuario;
+    public javax.swing.JTextField TxtApellidoUsuario;
+    public javax.swing.JTextField TxtCuiUsuario;
+    public javax.swing.JTextField TxtNombreUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -194,6 +209,25 @@ public class RegistroUsuario extends javax.swing.JFrame {
     }
 
     public Object getTxtApellidoUsuario() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          return TxtApellidoUsuario;
     }
+    
+    public void mostrarMensajeError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void mostrarMensajeExito(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+   
+    public javax.swing.JTextField getTxtCuiUsuario() {
+        return TxtCuiUsuario;
+    }
+    
+     public javax.swing.JTextField getTxtNombreUsuario() {
+        return TxtNombreUsuario;
+    }
+     
+    
+      
 }
