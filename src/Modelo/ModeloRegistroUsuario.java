@@ -40,7 +40,7 @@ public class ModeloRegistroUsuario {
 }
     
     
-    private List<Usuario> usuarios; // Lista de usuarios registrados
+    public List<Usuario> usuarios; // Lista de usuarios registrados
     private int maxClientes =7; // Cantidad máxima de clientes permitidos
     private String ultimoMensaje;//ultimo mensaje generado
     private boolean mensajeGenerado; // Variable para controlar si se ha generado un mensaje

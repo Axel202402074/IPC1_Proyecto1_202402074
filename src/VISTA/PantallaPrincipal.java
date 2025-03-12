@@ -13,6 +13,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
      */
     public PantallaPrincipal() {
         initComponents();
+        this.setTitle("Login");
+         this.setLocationRelativeTo(null);
       
     }
 
@@ -199,7 +201,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void btnCrearCueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearCueActionPerformed
         // TODO add your handling code here:
-        CrearCuenta nuevavista =new CrearCuenta();
+        CrearCuenta_2 nuevavista =new CrearCuenta_2();
         
         nuevavista.setVisible(true);
         
@@ -207,13 +209,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearCueActionPerformed
 
     private void btnBuscarCueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarCueActionPerformed
-        // TODO add your handling code here:
+      
+        
+                BuscarCuentas_3 nuevavista =new BuscarCuentas_3();
+            nuevavista.setVisible(true);
+        
+        
     }//GEN-LAST:event_btnBuscarCueActionPerformed
 
     private void btnRegistroUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroUsuActionPerformed
         // TODO add your handling code here:
         
-        RegistroUsuario nuevavista =new RegistroUsuario();
+        RegistroUsuario_1 nuevavista =new RegistroUsuario_1();
         
         nuevavista.setVisible(true);
         
@@ -223,24 +230,25 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistroUsuActionPerformed
 
     private void btnDepositosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositosActionPerformed
-        // TODO add your handling code here:
+        Depositos_4 nuevavista =new Depositos_4();
+            nuevavista.setVisible(true);
     }//GEN-LAST:event_btnDepositosActionPerformed
 
     private void btnRetirosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirosActionPerformed
-        // TODO add your handling code here:
+         Retiros_5 nuevavista =new Retiros_5();
+            nuevavista.setVisible(true);
     }//GEN-LAST:event_btnRetirosActionPerformed
 
     private void btnHistorialdetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialdetraActionPerformed
-        // TODO add your handling code here:
+        Historial_6 nuevavista =new Historial_6();
+            nuevavista.setVisible(true);
     }//GEN-LAST:event_btnHistorialdetraActionPerformed
 
     private void btnGenReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenReportActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnGenReportActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

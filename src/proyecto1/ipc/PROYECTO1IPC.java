@@ -6,8 +6,12 @@ package proyecto1.ipc;
 import Modelo.ModeloLogin;
 import VISTA.Interfazinicio;
 import Controlador.ControladorLogin;
+import Controlador.ControladorCrearCuenta;
+import Modelo.ModeloCrearCuenta;
+import Modelo.ModeloRegistroUsuario;
+import VISTA.CrearCuenta_2;
 import VISTA.PantallaPrincipal;
-import VISTA.RegistroUsuario;
+import VISTA.RegistroUsuario_1;
 
 public class PROYECTO1IPC {
     public static void main(String[] args) {
@@ -25,7 +29,21 @@ public class PROYECTO1IPC {
         
         //Inicializar la vista 
         PantallaPrincipal vista1 =new PantallaPrincipal();
-        RegistroUsuario vistaregistro=new RegistroUsuario();
+        RegistroUsuario_1 vistaregistro=new RegistroUsuario_1();
         
     }
+    
+    
+    
+    
+    //crear usuario
+        ModeloRegistroUsuario modeloUsuarios = new ModeloRegistroUsuario(6); // 6 clientes máx
+        ModeloCrearCuenta modeloCuentas = new ModeloCrearCuenta(3); // 3 cuentas por cliente
+        CrearCuenta_2 vistaCuentas = new CrearCuenta_2();
+
+        // El controlador se encarga de todo automáticamente
+        ControladorCrearCuenta controladorCuenta= new ControladorCrearCuenta(vistaCuentas, modeloCuentas, modeloUsuarios);
+    
+
+        
 }

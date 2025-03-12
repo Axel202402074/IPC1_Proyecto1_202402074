@@ -9,6 +9,7 @@ public class Interfazinicio extends javax.swing.JFrame {
 
     public Interfazinicio() {
         initComponents();
+         this.setLocationRelativeTo(null);
     }
 
     /**
