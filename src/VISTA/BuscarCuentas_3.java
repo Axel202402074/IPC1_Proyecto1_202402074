@@ -1,23 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package VISTA;
 
-/**
- *
- * @author USER
- */
-public class BuscarCuentas_3 extends javax.swing.JFrame {
+import javax.swing.table.DefaultTableModel;
 
-    /**
-     * Creates new form BuscarCuentas_3
-     */
+
+public class BuscarCuentas_3 extends javax.swing.JFrame {
+DefaultTableModel modelmovs = new  DefaultTableModel();
+   
     public BuscarCuentas_3() {
         initComponents();
         
          this.setTitle("Ver clientes");
         this.setLocationRelativeTo(null);
+        
+        
+        modelmovs.addColumn("CUI");
+        modelmovs.addColumn("Nombre");
+        modelmovs.addColumn("Apellido");
+         
+        tblCuentas.setModel(modelmovs);
+        
+        
+        
+        
+        
+        
+        
     }
 
     /**
@@ -29,7 +37,7 @@ public class BuscarCuentas_3 extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblCuentas = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -38,8 +46,8 @@ public class BuscarCuentas_3 extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
-        jTable1.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblCuentas.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        tblCuentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -52,7 +60,7 @@ public class BuscarCuentas_3 extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblCuentas);
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,7 +181,7 @@ public class BuscarCuentas_3 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tblCuentas;
     // End of variables declaration//GEN-END:variables
 }

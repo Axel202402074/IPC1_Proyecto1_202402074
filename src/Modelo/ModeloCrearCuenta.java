@@ -1,52 +1,77 @@
+
 package Modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ModeloCrearCuenta {
-    public class Cuenta {
-        private String id;
-        private String cuiCliente;
+    
+    
+    public static class Cuenta {
+        private final String id;
+        private final String cuiCliente;
         private double saldo;
+        private final List<ModeloHistorial> mismovimientos;
 
         public Cuenta(String cuiCliente) {
-            this.id = "D2D025" + UUID.randomUUID().toString().substring(0, 5);
+            this.id = "D2D025" + System.currentTimeMillis();
             this.cuiCliente = cuiCliente;
             this.saldo = 0;
+            this.mismovimientos = new ArrayList<>();
         }
 
-        // Getters
         public String getId() { return id; }
         public String getCuiCliente() { return cuiCliente; }
         public double getSaldo() { return saldo; }
+        public List<ModeloHistorial> getMismovimientos() { return mismovimientos; }
     }
 
-    private List<Cuenta> cuentas;
-    private int maxCuentasPorCliente;
+    private final List<Cuenta> cuentas;
+    private final int maxCuentasPorCliente;
     private String ultimoMensaje;
-
-    public ModeloCrearCuenta(int maxCuentas) {
+    private final ModeloRegistroUsuario modeloUsuario; // Ahora validamos usuarios
+    
+    
+     public ModeloCrearCuenta(int maxCuentasPorCliente) {
+        this.maxCuentasPorCliente = maxCuentasPorCliente;
+        this.cuentas = new ArrayList<>();
+        this.modeloUsuario = null;
+    }
+     
+    public ModeloCrearCuenta(int maxCuentas, ModeloRegistroUsuario modeloUsuario) {
         this.cuentas = new ArrayList<>();
         this.maxCuentasPorCliente = maxCuentas;
+        this.modeloUsuario = modeloUsuario;
     }
 
     public boolean crearCuenta(String cuiCliente) {
-        int cuentasExistentes = (int) cuentas.stream()
-                .filter(c -> c.getCuiCliente().equals(cuiCliente))
-                .count();
-        
-        if(cuentasExistentes >= maxCuentasPorCliente) {
-            ultimoMensaje = "No es posible crear más cuentas para el cliente";
+        if (modeloUsuario.buscarUsuarioPorCUI(cuiCliente) == null) {
+            this.ultimoMensaje = "El cliente no existe.";
             return false;
         }
-        
-        cuentas.add(new Cuenta(cuiCliente));
-        ultimoMensaje = "Cuenta creada exitosamente. ID: " + cuentas.get(cuentas.size()-1).getId();
+
+        long cuentasExistentes = cuentas.stream()
+                .filter(c -> c.getCuiCliente().equals(cuiCliente))
+                .count();
+
+        if (cuentasExistentes >= maxCuentasPorCliente) {
+            this.ultimoMensaje = "No se pueden crear más cuentas para este cliente.";
+            return false;
+        }
+
+        Cuenta nuevaCuenta = new Cuenta(cuiCliente);
+        cuentas.add(nuevaCuenta);
+        this.ultimoMensaje = "Cuenta creada exitosamente. ID: " + nuevaCuenta.getId();
         return true;
     }
 
+    public List<Cuenta> getCuentasPorCliente(String cui) {
+        return cuentas.stream()
+                .filter(c -> c.getCuiCliente().equals(cui))
+                .toList();
+    }
+
     public String getUltimoMensaje() {
-        return ultimoMensaje;
+        return this.ultimoMensaje;
     }
 }
