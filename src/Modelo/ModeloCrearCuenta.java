@@ -1,20 +1,20 @@
-
 package Modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ModeloCrearCuenta {
-    
-    
     public static class Cuenta {
         private final String id;
         private final String cuiCliente;
         private double saldo;
         private final List<ModeloHistorial> mismovimientos;
+        private static int contador = 0;
 
         public Cuenta(String cuiCliente) {
-            this.id = "D2D025" + System.currentTimeMillis();
+            contador++;
+            this.id = "D2D025" + contador;
             this.cuiCliente = cuiCliente;
             this.saldo = 0;
             this.mismovimientos = new ArrayList<>();
@@ -29,8 +29,8 @@ public class ModeloCrearCuenta {
     private final List<Cuenta> cuentas;
     private final int maxCuentasPorCliente;
     private String ultimoMensaje;
-    private final ModeloRegistroUsuario modeloUsuario; // Ahora validamos usuarios
-    
+    private final ModeloRegistroUsuario modeloUsuario;
+
     
      public ModeloCrearCuenta(int maxCuentasPorCliente) {
         this.maxCuentasPorCliente = maxCuentasPorCliente;
@@ -68,10 +68,12 @@ public class ModeloCrearCuenta {
     public List<Cuenta> getCuentasPorCliente(String cui) {
         return cuentas.stream()
                 .filter(c -> c.getCuiCliente().equals(cui))
-                .toList();
+            .toList();
     }
 
     public String getUltimoMensaje() {
         return this.ultimoMensaje;
     }
+    
+
 }

@@ -1,6 +1,7 @@
 
-
 package VISTA;
+
+import Modelo.ModeloCrearCuenta;
 import Modelo.ModeloRegistroUsuario;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -13,15 +14,16 @@ import javax.swing.DefaultComboBoxModel;
 
 public class CrearCuenta_2 extends javax.swing.JFrame{
 
-   
-    public CrearCuenta_2() {
+    ArrayList <String>  listaClientes = new ArrayList<String>();
+   public static  ArrayList<String>     listaCuentas = new ArrayList<String>();
+    
+    public CrearCuenta_2() {    
         initComponents();
-        
-        
-        
-        
-        
-        
+    this.setTitle("Crear Cuenta");
+    this.setLocationRelativeTo(null);
+     // Asegurar que se llenen los clientes
+     cargarClientesEnComboBox(); 
+
     }
 
  
@@ -30,7 +32,6 @@ public class CrearCuenta_2 extends javax.swing.JFrame{
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cboidcliente = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
@@ -39,8 +40,6 @@ public class CrearCuenta_2 extends javax.swing.JFrame{
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel1.setForeground(new java.awt.Color(204, 255, 255));
-
-        jLabel1.setText("Crear cuenta");
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -73,11 +72,7 @@ public class CrearCuenta_2 extends javax.swing.JFrame{
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(cboidcliente, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -91,9 +86,7 @@ public class CrearCuenta_2 extends javax.swing.JFrame{
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cboidcliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -123,22 +116,92 @@ public class CrearCuenta_2 extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+  // Obtener el cliente seleccionado en formato "CUI - Nombre"
+    String clienteSeleccionado = (String) cboidcliente.getSelectedItem();
+    
+    if (clienteSeleccionado == null || clienteSeleccionado.isEmpty()) {
+        JOptionPane.showMessageDialog(this, 
+            "Debe seleccionar un cliente", 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Extraer el CUI del cliente seleccionado (asumimos que está antes del '-')
+    String cui = clienteSeleccionado.split(" - ")[0].trim();
+
+    // Contar cuántas cuentas tiene el cliente seleccionado
+    int cuentasDelCliente = contarCuentas(clienteSeleccionado);
+    System.out.println("Cuentas del cliente: " + cuentasDelCliente); // Depuración
+
+    if (cuentasDelCliente >= 3) {
+        // Mostrar mensaje de advertencia si ya tiene 3 cuentas
+        JOptionPane.showMessageDialog(this, 
+            "No es posible crear más cuentas para el cliente seleccionado", 
+            "Advertencia", 
+            JOptionPane.WARNING_MESSAGE);
+    } else {
+        // Crear la cuenta
+        int numeroCuenta = cuentasDelCliente + 1;
+        String nuevaCuenta = "D2D025" + numeroCuenta + " " + clienteSeleccionado;
+
+        listaCuentas.add(nuevaCuenta); // Agregar la cuenta a la lista
+
+        // *** Agregar la cuenta al usuario en ModeloRegistroUsuario ***
+        ModeloRegistroUsuario usuario = buscarUsuarioPorCUI(cui);
+        if (usuario != null) {
+            usuario.getListaCuentas().add(nuevaCuenta); // Asignar la cuenta al usuario
+            System.out.println("Cuenta agregada correctamente a " + cui);
+        } else {
+            System.out.println("Error: Usuario no encontrado en ModeloRegistroUsuario.");
+        }
+
+        JOptionPane.showMessageDialog(this, 
+            "Cuenta creada exitosamente", 
+            "Información", 
+            JOptionPane.INFORMATION_MESSAGE);
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
+// Método para contar cuántas cuentas tiene un cliente en la lista
+private int contarCuentas(String cliente) {
+    int contador = 0;
+    for (String cuenta : listaCuentas) {
+        String[] partes = cuenta.split(" "); // Dividir la cuenta en partes
+        if (partes.length > 1 && cuenta.endsWith(cliente)) { // Comprobar si el cliente está al final
+            contador++;
+        }
+    }
+    System.out.println("Total de cuentas para el cliente '" + cliente + "': " + contador); // Depuración
+    return contador;
+}
+
+private void cargarClientesEnComboBox() {
+    RegistroUsuario_1 obj = new RegistroUsuario_1(); 
+    ArrayList<String> cui = obj.llenarCui(); 
+    ArrayList<String> nombre = obj.llenarNOMBRE();
+
+    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+
+    if (cui.size() == nombre.size()) {
+        for (int i = 0; i < cui.size(); i++) {
+            String cliente = cui.get(i) + " - " + nombre.get(i);
+            listaClientes.add(cliente); // Agregar a la listaClientes
+            modelo.addElement(cliente);
+        }
+    } else {
+        System.out.println("Error: Las listas cui y nombre tienen diferentes tamaños.");
+    }
+
+    cboidcliente.setModel(modelo);
+}
+
+
 
     private void cboidclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboidclienteActionPerformed
-    RegistroUsuario_1 obj = new RegistroUsuario_1(); // NO CREES UNA NUEVA INSTANCIA
-    ArrayList<String> nombres = obj.llenarNOMBRE(); // Obtener los nombres registrados
-
-    // Crear el modelo del JComboBox con los nombres obtenidos
-    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
-    for (String nombre : nombres) {
-        modelo.addElement(nombre);
-    }
-    
-    cboidcliente.setModel(modelo); // Actualizar el JComboBox
+    String seleccionado = (String) cboidcliente.getSelectedItem();
+    System.out.println("Cliente seleccionado: " + seleccionado);
     }//GEN-LAST:event_cboidclienteActionPerformed
-
+    
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -176,7 +239,6 @@ public class CrearCuenta_2 extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> cboidcliente;
     public javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
@@ -187,10 +249,13 @@ public javax.swing.JComboBox<String> getComboClientes() {
 }
 
 public void actualizarListaClientes(List<String> clientes) {
-    cboidcliente.removeAllItems();
+    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
     for (String cliente : clientes) {
-        cboidcliente.addItem(cliente);
+        modelo.addElement(cliente);
     }
+    cboidcliente.setModel(modelo);
+    cboidcliente.repaint();
+    cboidcliente.revalidate();
 }
 
 public String getClienteSeleccionado() {
@@ -208,7 +273,24 @@ public void addCrearCuentaListener(ActionListener listener) {
 
 
 
+public void mostrarCuentasCliente(List<ModeloCrearCuenta.Cuenta> cuentas) {
+    StringBuilder sb = new StringBuilder();
+    for (ModeloCrearCuenta.Cuenta cuenta : cuentas) {
+        sb.append("Cuenta ID: ").append(cuenta.getId())
+          .append(" - Saldo: ").append(cuenta.getSaldo())
+          .append("\n");
+}
+    JOptionPane.showMessageDialog(this, sb.toString(), "Cuentas del Cliente", JOptionPane.INFORMATION_MESSAGE);
+}
 
+private ModeloRegistroUsuario buscarUsuarioPorCUI(String cui) {
+    for (ModeloRegistroUsuario usuario : RegistroUsuario_1.listaClientes) {
+        if (usuario.getCui().equals(cui)) {
+            return usuario;
+        }
+    }
+    return null; // Usuario no encontrado
+}
 
 
 

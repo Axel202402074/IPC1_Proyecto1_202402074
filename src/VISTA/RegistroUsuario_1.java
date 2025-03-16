@@ -8,14 +8,23 @@ import javax.swing.JOptionPane;
 import VISTA.CrearCuenta_2;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Action;
+import VISTA.BuscarCuentas_3;
 
 public class RegistroUsuario_1 extends javax.swing.JFrame {
+         
+     private BuscarCuentas_3 buscarCuentasInstance;     
+    public static ArrayList<ModeloRegistroUsuario> listaClientes = new ArrayList<>();
+        
     
-   public static ArrayList<ModeloRegistroUsuario> listaClientes = new ArrayList<ModeloRegistroUsuario>();
+   private String ultimoMensaje;
     public RegistroUsuario_1() {
+      BuscarCuentas_3 buscarCuentas = null;
         initComponents();
         this.setTitle("Crear Cliente");
         this.setLocationRelativeTo(null);
+        this.buscarCuentasInstance = buscarCuentas;
+        
+        
         
         
         
@@ -153,21 +162,30 @@ public class RegistroUsuario_1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCrearUsuarioActionPerformed
-
-        ModeloRegistroUsuario c = new ModeloRegistroUsuario();
-        
-        c.setCui(TxtCuiUsuario.getText());
-        c.setNombre(TxtNombreUsuario.getText());
-        c.setApellido(TxtApellidoUsuario.getText());
-        
-           
-        listaClientes.add(c);
-        borrarFormCliente();   
+ 
+  String cui = TxtCuiUsuario.getText();
+    String nombre = TxtNombreUsuario.getText();
+    String apellido = TxtApellidoUsuario.getText();
+    
+ 
+    if(cui.isEmpty() || nombre.isEmpty() || apellido.isEmpty()) {
+        mostrarMensajeError("Todos los campos son obligatorios");
+        return;
+      }
+    
+    /* if (buscarCuentasInstance != null) {
+        buscarCuentasInstance.getControlador().registrarCliente(cui, nombre, apellido);
+    }*/
+    // Usar el método crearUsuario que incluye validación de duplicados
+    if(crearUsuario(cui, nombre, apellido)) {
+        borrarFormCliente();
         llenarNOMBRE();
+        System.out.println(listaClientes);
+    }
+        
         
     }//GEN-LAST:event_BtnCrearUsuarioActionPerformed
-     
-    public void borrarFormCliente() {
+   public void borrarFormCliente() {
         TxtCuiUsuario.setText("");
         TxtNombreUsuario.setText("");
         TxtApellidoUsuario.setText("");
@@ -182,19 +200,39 @@ public class RegistroUsuario_1 extends javax.swing.JFrame {
         nombres.add(c.getNombre());
     }
     
-    return nombres; // Ahora devuelve la lista de nombres
+    return nombres; 
 }
-
+   
+   
+      public ArrayList<String> llenarCui() {
+    ArrayList<String> cuis = new ArrayList<>();
+    
+    // Llenar la lista con los cui de los clientes registrados
+    for (ModeloRegistroUsuario c : listaClientes) {
+        cuis.add(c.getCui());
+    }
+    
+    return cuis; 
+}
      
+      
+       public ArrayList<String> llenarApellido() {
+    ArrayList<String> apellido = new ArrayList<>();
+    
+    // Llenar la lista con los apellidos de los clientes registrados
+    for (ModeloRegistroUsuario c : listaClientes) {
+        apellido.add(c.getApellido());
+    }
+    
+    return apellido; 
+}
+      
     private void TxtCuiUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtCuiUsuarioActionPerformed
         
          
         
     }//GEN-LAST:event_TxtCuiUsuarioActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -243,7 +281,7 @@ public class RegistroUsuario_1 extends javax.swing.JFrame {
     public javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    public void setPantallaPrincipal(PantallaPrincipal pantalla1) {
+     public void setPantallaPrincipal(PantallaPrincipal pantalla1) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -266,9 +304,58 @@ public class RegistroUsuario_1 extends javax.swing.JFrame {
      public javax.swing.JTextField getTxtNombreUsuario() {
         return TxtNombreUsuario;
     }
-
-   
      
+     // Método para crear un nuevo usuario
+public boolean crearUsuario(String cui, String nombre, String apellido) {
+    if (existeUsuario(cui)) {
+        mostrarMensajeError("El CUI ya está registrado");
+        return false;
+    }
     
-      
+    if(cui.length() != 13) { // Validación de formato de CUI
+        mostrarMensajeError("El CUI debe tener 13 dígitos");
+        return false;
+    }
+    
+    listaClientes.add(new ModeloRegistroUsuario(cui, nombre, apellido));
+    mostrarMensajeExito("Cliente creado exitosamente");
+    return true;
+}
+
+    // Verifica si un usuario ya existe
+    public boolean existeUsuario(String cui) {
+        return listaClientes.stream().anyMatch(usuario -> usuario.getCui().equals(cui));
+    }
+
+    // Buscar un usuario por su CUI
+    public ModeloRegistroUsuario buscarUsuarioPorCUI(String cui) {
+        return listaClientes.stream()
+                .filter(usuario -> usuario.getCui().equals(cui))
+                .findFirst()
+                .orElse(null);
+    }
+     
+/*    private boolean validarCampos() {
+    return !TxtCuiUsuario.getText().isEmpty() &&
+           !TxtNombreUsuario.getText().isEmpty() &&
+           !TxtApellidoUsuario.getText().isEmpty();
+}*/
+    
+    
+    public void registrarCuenta(String cui, String cuenta) {
+    for (ModeloRegistroUsuario usuario : listaClientes) {
+        if (usuario.getCui().equals(cui)) {
+            usuario.agregarCuenta(cuenta); // 🔹 Agrega la cuenta al usuario
+            System.out.println("✅ Cuenta " + cuenta + " agregada a " + cui);
+            return;
+        }
+    }
+    System.out.println("❌ No se encontró el CUI: " + cui);
+}
+    
+    
+    
+    
+    
+    
 }

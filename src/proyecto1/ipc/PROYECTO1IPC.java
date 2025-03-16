@@ -8,6 +8,7 @@ import VISTA.Interfazinicio;
 import Controlador.ControladorLogin;
 import Controlador.ControladorCrearCuenta;
 import Modelo.ModeloCrearCuenta;
+import Modelo.ModeloPantallaPrincipal;
 import Modelo.ModeloRegistroUsuario;
 import VISTA.CrearCuenta_2;
 import VISTA.PantallaPrincipal;
@@ -15,6 +16,15 @@ import VISTA.RegistroUsuario_1;
 
 public class PROYECTO1IPC {
     public static void main(String[] args) {
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            ModeloPantallaPrincipal modelo = new ModeloPantallaPrincipal("Usuario"); // Cambia a "Administrador" si es admin
+           
+        }
+    });
+        
+        
         // Inicializar el modelo y la vista
         ModeloLogin modelo = new ModeloLogin("axel", "1234");
         Interfazinicio vista = new Interfazinicio();
@@ -28,7 +38,7 @@ public class PROYECTO1IPC {
         
         
         //Inicializar la vista 
-        PantallaPrincipal vista1 =new PantallaPrincipal();
+        //PantallaPrincipal vista1 =new PantallaPrincipal();
         RegistroUsuario_1 vistaregistro=new RegistroUsuario_1();
         
     }
@@ -43,7 +53,15 @@ public class PROYECTO1IPC {
 
         // El controlador se encarga de todo automáticamente
         ControladorCrearCuenta controladorCuenta= new ControladorCrearCuenta(vistaCuentas, modeloCuentas, modeloUsuarios);
-    
-
+   
         
-}
+        
+        
+        
+        
+        
+        
+        
+
+}    
+

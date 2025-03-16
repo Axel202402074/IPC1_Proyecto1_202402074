@@ -14,7 +14,7 @@ import javax.swing.Action;
 
 
 
-public class ControladorRegistroUsuario  implements ActionListener{
+public class ControladorRegistroUsuario  {
     private RegistroUsuario_1 vistausu;
     
     private ModeloRegistroUsuario modelo;
@@ -27,7 +27,7 @@ public class ControladorRegistroUsuario  implements ActionListener{
         this.vistausu = vista;
         this.modelo = modelo;
         this.pantallaPrincipal=pantallaPrincipal;
-        this.vistausu.BtnCrearUsuario.addActionListener(this);
+       
    
   
         
@@ -43,30 +43,27 @@ public class ControladorRegistroUsuario  implements ActionListener{
     }
     
 
-    public void crearUsuario() {
-        String cui = vistausu.TxtCuiUsuario.getText();
-            if (cui.length() != 13) {
-        JOptionPane.showMessageDialog(vistausu, "Necesita 13 dígitos", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-        
-            
-            }
-        String nombre = vistausu.TxtNombreUsuario.getText();
-        String apellido = vistausu.TxtApellidoUsuario.getText();
+public void crearUsuario() {
+    String cui = vistausu.TxtCuiUsuario.getText();
+    String nombre = vistausu.TxtNombreUsuario.getText();
+    String apellido = vistausu.TxtApellidoUsuario.getText();
 
-        /*  boolean resultado = modelo.crearUsuario(cui, nombre, apellido);
-    String mensaje = modelo.getUltimoMensaje();
+    if (!validarCampos(cui, nombre, apellido)) {
+        vistausu.mostrarMensajeError("Todos los campos son obligatorios.");
+        return;
+    }
 
-    if (resultado) {
-        vistausu.mostrarMensajeExito(mensaje);
+    if (modelo.crearUsuario(cui, nombre, apellido)) {
+        vistausu.borrarFormCliente();
+        vistausu.mostrarMensajeExito("Cliente creado exitosamente.");
     } else {
-        vistausu.mostrarMensajeError(mensaje);
-        }*/
+        vistausu.mostrarMensajeError(modelo.getUltimoMensaje());
     }
-    
-    public void actionPerformed(ActionEvent bt){
-        
-    
-    }
+}
+
+private boolean validarCampos(String cui, String nombre, String apellido) {
+    return !cui.isEmpty() && !nombre.isEmpty() && !apellido.isEmpty() && cui.length() == 13;
+}
     
     
     
