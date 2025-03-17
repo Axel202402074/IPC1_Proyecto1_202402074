@@ -38,7 +38,7 @@ ArrayList<String> listaCuentas = new ArrayList<String>(); // Depende de dónde g
         tbldatos.setColumnIdentifiers(titulo);
         tblCuentas.setModel(tbldatos);
         
-        
+     
      
             modelmovs1.addColumn("Cuentas asociadas");
             tblcuentasAsociadas.setModel(modelmovs1);
@@ -195,19 +195,19 @@ ArrayList<String> listaCuentas = new ArrayList<String>(); // Depende de dónde g
                 for (ModeloRegistroUsuario usuario : listaClientes) {
                     if (usuario.getCui().equals(cuiIngresado)) {
                         encontrado = true;
-                   
+
                         break;
-                    }
-                }
+    }
+    }
 
                 if (!encontrado) {
                     JOptionPane.showMessageDialog(this, "El CUI ingresado no está registrado.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
-                }
+    }                                                
 
     agregarcuentas(cuiIngresado);
     }//GEN-LAST:event_btnBuscarCuentasActionPerformed
-
+  
   
     public static void main(String args[]) {
         
@@ -255,14 +255,14 @@ ArrayList<String> listaCuentas = new ArrayList<String>(); // Depende de dónde g
     public javax.swing.JTable tblcuentasAsociadas;
     private javax.swing.JTextField txtcui;
     // End of variables declaration//GEN-END:variables
-
+    
 public void agregarcuentas(String cuiIngresado) {
     // Limpiar la tabla antes de agregar nuevas cuentas
     modelmovs1.setRowCount(0);
 
     // Buscar cuentas asociadas al CUI
     List<String> cuentas = obtenerCuentasAsociadas(cuiIngresado);
-    
+
     System.out.println("Cuentas encontradas para CUI " + cuiIngresado + ": " + cuentas); // Depuración
 
     for (String cuenta : cuentas) {

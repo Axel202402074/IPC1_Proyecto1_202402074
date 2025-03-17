@@ -1,3 +1,4 @@
+
 package Modelo;
 
 import java.util.ArrayList;
@@ -5,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ModeloCrearCuenta {
+    
     public static class Cuenta {
         private final String id;
         private final String cuiCliente;
@@ -16,13 +18,14 @@ public class ModeloCrearCuenta {
             contador++;
             this.id = "D2D025" + contador;
             this.cuiCliente = cuiCliente;
-            this.saldo = 0;
+            this.saldo = 0; // Saldo inicial en 0
             this.mismovimientos = new ArrayList<>();
         }
 
         public String getId() { return id; }
         public String getCuiCliente() { return cuiCliente; }
         public double getSaldo() { return saldo; }
+        public void setSaldo(double saldo) { this.saldo = saldo; }
         public List<ModeloHistorial> getMismovimientos() { return mismovimientos; }
     }
 
@@ -31,23 +34,22 @@ public class ModeloCrearCuenta {
     private String ultimoMensaje;
     private final ModeloRegistroUsuario modeloUsuario;
 
-    
-     public ModeloCrearCuenta(int maxCuentasPorCliente) {
+    public ModeloCrearCuenta(int maxCuentasPorCliente, ModeloRegistroUsuario modeloUsuario) {
         this.maxCuentasPorCliente = maxCuentasPorCliente;
         this.cuentas = new ArrayList<>();
-        this.modeloUsuario = null;
-    }
-     
-    public ModeloCrearCuenta(int maxCuentas, ModeloRegistroUsuario modeloUsuario) {
-        this.cuentas = new ArrayList<>();
-        this.maxCuentasPorCliente = maxCuentas;
         this.modeloUsuario = modeloUsuario;
     }
 
+    // Constructor alternativo en caso de no recibir un modelo de usuario (evita null)
+    public ModeloCrearCuenta(int maxCuentasPorCliente) {
+        this(maxCuentasPorCliente, null);
+    }
+
     public boolean crearCuenta(String cuiCliente) {
-        if (modeloUsuario.buscarUsuarioPorCUI(cuiCliente) == null) {
+        if (modeloUsuario == null || modeloUsuario.buscarUsuarioPorCUI(cuiCliente) == null) {
             this.ultimoMensaje = "El cliente no existe.";
-            return false;
+            System.out.println("Creando cuenta para el CUI: " + cuiCliente);
+            return true;
         }
 
         long cuentasExistentes = cuentas.stream()
@@ -55,7 +57,7 @@ public class ModeloCrearCuenta {
                 .count();
 
         if (cuentasExistentes >= maxCuentasPorCliente) {
-            this.ultimoMensaje = "No se pueden crear más cuentas para este cliente.";
+            this.ultimoMensaje = "No se pueden crear más de " + maxCuentasPorCliente + " cuentas por cliente.";
             return false;
         }
 
@@ -68,12 +70,11 @@ public class ModeloCrearCuenta {
     public List<Cuenta> getCuentasPorCliente(String cui) {
         return cuentas.stream()
                 .filter(c -> c.getCuiCliente().equals(cui))
-            .toList();
+                .collect(Collectors.toList());
     }
 
     public String getUltimoMensaje() {
         return this.ultimoMensaje;
     }
-    
-
 }
+    

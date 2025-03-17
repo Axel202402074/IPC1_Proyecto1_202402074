@@ -13,7 +13,7 @@ import javax.swing.DefaultComboBoxModel;
 
 
 public class CrearCuenta_2 extends javax.swing.JFrame{
-
+    
     ArrayList <String>  listaClientes = new ArrayList<String>();
    public static  ArrayList<String>     listaCuentas = new ArrayList<String>();
     
@@ -116,24 +116,21 @@ public class CrearCuenta_2 extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-  // Obtener el cliente seleccionado en formato "CUI - Nombre"
-    String clienteSeleccionado = (String) cboidcliente.getSelectedItem();
-    
-    if (clienteSeleccionado == null || clienteSeleccionado.isEmpty()) {
-        JOptionPane.showMessageDialog(this, 
-            "Debe seleccionar un cliente", 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+   
+        String clienteSeleccionado = (String) cboidcliente.getSelectedItem();
+        
+        if (clienteSeleccionado == null || clienteSeleccionado.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
     // Extraer el CUI del cliente seleccionado (asumimos que está antes del '-')
-    String cui = clienteSeleccionado.split(" - ")[0].trim();
-
+        String cui = clienteSeleccionado.split(" - ")[0].trim();
+        
     // Contar cuántas cuentas tiene el cliente seleccionado
     int cuentasDelCliente = contarCuentas(clienteSeleccionado);
     System.out.println("Cuentas del cliente: " + cuentasDelCliente); // Depuración
-
+        
     if (cuentasDelCliente >= 3) {
         // Mostrar mensaje de advertencia si ya tiene 3 cuentas
         JOptionPane.showMessageDialog(this, 
@@ -155,45 +152,45 @@ public class CrearCuenta_2 extends javax.swing.JFrame{
         } else {
             System.out.println("Error: Usuario no encontrado en ModeloRegistroUsuario.");
         }
-
+        
         JOptionPane.showMessageDialog(this, 
             "Cuenta creada exitosamente", 
             "Información", 
             JOptionPane.INFORMATION_MESSAGE);
-    }
+    }//GEN-LAST:event_jButton1ActionPerformed
     }//GEN-LAST:event_jButton1ActionPerformed
 // Método para contar cuántas cuentas tiene un cliente en la lista
-private int contarCuentas(String cliente) {
-    int contador = 0;
-    for (String cuenta : listaCuentas) {
+    private int contarCuentas(String cliente) {
+        int contador = 0;
+        for (String cuenta : listaCuentas) {
         String[] partes = cuenta.split(" "); // Dividir la cuenta en partes
         if (partes.length > 1 && cuenta.endsWith(cliente)) { // Comprobar si el cliente está al final
-            contador++;
+                contador++;
+            }
         }
-    }
     System.out.println("Total de cuentas para el cliente '" + cliente + "': " + contador); // Depuración
-    return contador;
-}
+        return contador;
+    }
 
-private void cargarClientesEnComboBox() {
-    RegistroUsuario_1 obj = new RegistroUsuario_1(); 
-    ArrayList<String> cui = obj.llenarCui(); 
-    ArrayList<String> nombre = obj.llenarNOMBRE();
+    private void cargarClientesEnComboBox() {
+           RegistroUsuario_1 obj = new RegistroUsuario_1(); 
+           ArrayList<String> cui = obj.llenarCui(); 
+           ArrayList<String> nombre = obj.llenarNOMBRE();
 
-    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+           DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
 
-    if (cui.size() == nombre.size()) {
-        for (int i = 0; i < cui.size(); i++) {
-            String cliente = cui.get(i) + " - " + nombre.get(i);
+           if (cui.size() == nombre.size()) {
+               for (int i = 0; i < cui.size(); i++) {
+                   String cliente = cui.get(i) + " - " + nombre.get(i);
             listaClientes.add(cliente); // Agregar a la listaClientes
-            modelo.addElement(cliente);
-        }
+                   modelo.addElement(cliente);
+               }
     } else {
         System.out.println("Error: Las listas cui y nombre tienen diferentes tamaños.");
-    }
+           }
 
-    cboidcliente.setModel(modelo);
-}
+           cboidcliente.setModel(modelo);
+       }
 
 
 
@@ -283,14 +280,14 @@ public void mostrarCuentasCliente(List<ModeloCrearCuenta.Cuenta> cuentas) {
     JOptionPane.showMessageDialog(this, sb.toString(), "Cuentas del Cliente", JOptionPane.INFORMATION_MESSAGE);
 }
 
-private ModeloRegistroUsuario buscarUsuarioPorCUI(String cui) {
-    for (ModeloRegistroUsuario usuario : RegistroUsuario_1.listaClientes) {
-        if (usuario.getCui().equals(cui)) {
-            return usuario;
+ private ModeloRegistroUsuario buscarUsuarioPorCUI(String cui) {
+        for (ModeloRegistroUsuario usuario : RegistroUsuario_1.listaClientes) {
+            if (usuario.getCui().equals(cui)) {
+                return usuario;
+            }
         }
-    }
     return null; // Usuario no encontrado
-}
+    }
 
 
 
